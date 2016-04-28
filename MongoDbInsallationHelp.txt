@@ -1,0 +1,52 @@
+install the mondodb
+Copy the intalled folder under C or D directory
+created the folder data\db under the root directory
+go to the bin directory in command prompt
+execute the command mongod.exe D:\MongoDb\data\DB eg:
+
+The command I used to install MongoDB on Win 32bit machine is below
+D:\mondoDB\Server\3.2\bin\>mongod.exe --dbpath D:\MongoDB\Server\3.2\data\db --storageEngine=mmapv1
+My DB is running on the port 27017
+
+Open another command prompt to open the MongoDB shell
+
+goto the path D:\mondoDB\Server\3.2\bin
+Run the exe Mongo.exe
+
+execute show dbs
+
+
+Create the file mongod.cfg
+Add the below entries
+
+logpath=D:\MongoDB\Server\3.2\log\mongo.log
+dbpath=D:\MongoDB\Server\3.2\data\db
+port=27017
+
+Install mongodb as a service
+---------------------
+1) execute the below command
+go to D:\mondoDB\Server\3.2\bin in command prompt
+Run the command mongod.exe --config D:\mondoDB\Server\3.2\mongod.cfg --install
+
+D:\MongoDB\Server\3.2\bin\mongod.exe --service --rest --journal --master --logpath=D:\MongoDB\Server\3.2\log --dbpath=D:\MongoDB\Server\3.2\data\db
+Add the below bit in Regidt(http://stackoverflow.com/questions/15395031/install-mongodb-on-window-8)
+
+Creating a Windows service for MongoDB
+
+Open your command window and type the following:
+
+cd c:\mongodb\bin\mongod.exe --install --rest -master -logpath=c:\mongodb\log\mongo.log
+Open the registry settings, press the Windows key and R at the same time and then type regedit in the Run command window.
+Go to HKEY_LOCAL_MACHINE >> SYSTEM >> CurrentControlSet >> services
+Find out MongoDB directory & edit ImagePath key Set key value as:
+
+C:\mongodb\bin\mongod --service --rest --master --logpath=C:\mongodb\logs\mongo.log --dbpath=C:\mongodb\data
+Save and exit registry editor.
+Open Services by pressing the Windows key and R at the same time and then type services.msc in the Run command window and click OK.
+Find the MongoDB service and right-click on it, select Properties
+Make sure the service is set to start automatically and start the service as shown below
+
+D:\MongoDB\Server\3.2\bin\mongod.exe --service --rest --journal --master --logpath=D:\MongoDB\Server\3.2\log\mongo.log --dbpath=D:\MongoDB\Server\3.2\data\db
+
+
