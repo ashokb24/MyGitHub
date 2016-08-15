@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poc.micro.service.EventAPIProducer;
 import com.poc.micro.service.EventMessageResponse;
+import com.poc.micro.service.EventService;
 import com.poc.micro.service.dao.EventDAOService;
 import com.poc.micro.service.model.Event;
 import com.poc.micro.service.model.EventMessageRequest;
@@ -20,36 +20,31 @@ import com.poc.micro.service.model.EventMessageRequest;
 public class EventRestController {
 
 	@Autowired
-	EventAPIProducer eventAPIProducer;
-
-	@Autowired
 	EventDAOService eventDaoService;
+	
+	@Autowired
+	EventService eventService;
 
-	@RequestMapping(path = "/produceEvent", method = RequestMethod.POST)
+	@RequestMapping(path = "/events", method = RequestMethod.POST)
 	public EventMessageResponse produceEvent(@RequestBody EventMessageRequest msg)
 			throws ExecutionException, InterruptedException {
-		return eventAPIProducer.sendEvent(msg);
+		return eventService.triggerEvent(msg);
 	}
 
-	@RequestMapping(path = "/fetchAllEvents", method = RequestMethod.GET)
+	@RequestMapping(path = "/events", method = RequestMethod.GET)
 	public List<Event> fetchAllEvents() {
-		return eventDaoService.getAllEvents();
+		return eventService.getAllEvents();
 	}
 	
-	@RequestMapping(path = "/fetchAllEvents/{eventSourceName}", method = RequestMethod.GET)
+	@RequestMapping(path = "/events/{eventSourceName}", method = RequestMethod.GET)
 	public List<Event> fetchAllEvents(@RequestHeader("eventSourceName") String eventSournceName) {
-		return eventDaoService.getAllEventsByEventSourceName(eventSournceName);
+		return eventService.getAllEventsByEventSourceName(eventSournceName);
 	}
 	
-	@RequestMapping(path = "/fetchAllEventsByDuration", method = RequestMethod.GET)
+	@RequestMapping(path = "/events/{eventStartTime}/{eventEndTime}", method = RequestMethod.GET)
 	public List<Event> fetchAllEventsByTime(@RequestHeader("eventStartTime") String eventStartTime,@RequestHeader("eventEndTime") String eventEndTime){
-		return eventDaoService.getAllEventsByDuration(eventStartTime, eventEndTime);
+		return eventService.getAllEventsByDuration(eventStartTime, eventEndTime);
 	}
 
-	@RequestMapping(path = "/deleteAllEvents", method = RequestMethod.DELETE)
-	public String deleteAllEvents() {
-		eventDaoService.deleteAllEvents();
-		return "Events Deleted Successfully";
-	}
   
 }

@@ -10,7 +10,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,8 +48,6 @@ public class EventAPIProducer {
 
 	private Producer<String, String> producer;
 
-	@Autowired
-	EventAPIConsumer eventAPIConsumer;
 
 	/**
 	 * 
@@ -85,7 +82,6 @@ public class EventAPIProducer {
 		eventResponse.setPartition(recordMetaData.partition());
 		eventResponse.setTopicName(recordMetaData.topic());
 		eventResponse.setStatusDescription("Event Produced Successfully");
-		eventAPIConsumer.run();
 		return eventResponse;
 
 	}
@@ -94,7 +90,7 @@ public class EventAPIProducer {
 	 * 
 	 * @param req
 	 */
-	private void sendAsync(EventMessageRequest req) {
+	/*private void sendAsync(EventMessageRequest req) {
 		ProducerRecord<String, String> record = new ProducerRecord<>(topic,
 				req.getEventSourceNode() + " : " + req.getMessageTxt());
 		producer.send(record, (RecordMetadata recordMetadata, Exception e) -> {
@@ -103,5 +99,5 @@ public class EventAPIProducer {
 			}
 		});
 		eventAPIConsumer.run();
-	}
+	}*/
 }

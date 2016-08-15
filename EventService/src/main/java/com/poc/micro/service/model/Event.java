@@ -1,7 +1,5 @@
 package com.poc.micro.service.model;
 
-import java.util.Date;
-
 public class Event {
 	private String Id;
 
